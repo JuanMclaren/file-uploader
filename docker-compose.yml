@@ -1,0 +1,21 @@
+version: '2'
+services:
+      h2-service:
+        container_name: PLACE_HOLDER
+        image: PLACE_HOLDER
+        command: PLACE_HOLDER
+        environment:
+            ROOT_PASSWORD: PLACE_HOLDER
+            DATABASE: PLACE_HOLDER
+            USER: PLACE_HOLDER
+            PASSWORD: PLACE_HOLDER
+        ports:
+              -"8081:8080"
+      fileReader-app:
+        container_name: fileReader-app
+        build:
+            context: api/
+            dockerfile: Dockerfile
+        image: fileReader-app:latest
+        ports:
+            - "8080:8080"
