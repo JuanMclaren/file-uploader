@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.example.demo.batch.config.FileMovingTasklet;
 
 @Component
-public class MoveFile {
+public class MoveFileStep {
 	
 	@Autowired
 	public StepBuilderFactory stepBuilderFactory;

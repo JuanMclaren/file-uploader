@@ -56,7 +56,10 @@ public class BatchConfiguration {
 
 	@Bean
 	public Job job() {
-		return jobBuilderFactory.get("job").listener(listener).start(step1).next(moveFile).build();
+		return jobBuilderFactory.get("job").listener(listener).
+				start(step1).
+				next(step1).
+				next(moveFile).build();
 	}
 
 
