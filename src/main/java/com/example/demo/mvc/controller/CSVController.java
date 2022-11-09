@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
+import com.example.demo.batch.persistence.domain.Tutorial;
+import com.example.demo.mvc.TutorialRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +28,16 @@ public class CSVController {
 
 	@Value("${file.input}")
 	private String fileInput;
+
+
+	@Autowired
+	TutorialRepo tutorialRepo;
+
+
+	@GetMapping("/get")
+	public ResponseEntity<List<Tutorial>> get() {
+		return ResponseEntity.status(HttpStatus.OK).body(tutorialRepo.findAll());
+	}
 
 	@PostMapping("/upload")
 	public ResponseEntity<ResponseMessage> singleFileUpload(@RequestParam("file") MultipartFile file) {
