@@ -21,7 +21,7 @@ public class DemoApplication {
 	public CommandLineRunner demo(TutorialRepo repo) {
 		return (args) -> {
 
-			IntStream.range(0, 10).forEach(
+			IntStream.range(0, 100).forEach(
 					nbr -> getAndPersistTutorial(nbr,repo)
 			);
 
@@ -29,11 +29,12 @@ public class DemoApplication {
 	}
 
 	private void getAndPersistTutorial(int nbr, TutorialRepo repo) {
-		Tutorial tutorial = new Tutorial();
-		tutorial.setId(Long.valueOf(nbr));
-		tutorial.setDescription("Description " + nbr);
-		tutorial.setTitle("title " + nbr);
-		tutorial.setPublished( nbr% 5 == 0? true: false);
+		Tutorial tutorial = Tutorial.builder().
+				id(Long.valueOf(nbr)).
+				title("title:" + nbr).
+				description("Description:" + nbr).
+				published( nbr% 5 == 0? true: false).
+				build();
 		System.out.println("tutorial persisted " + tutorial);
 		repo.save(tutorial);
 	}
