@@ -5,12 +5,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.example.demo.batch.persistence.domain.Tutorial;
 import com.example.demo.mvc.TutorialRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +34,29 @@ public class CSVController {
 	TutorialRepo tutorialRepo;
 
 
-	@GetMapping("/get")
+	@GetMapping(value = "/get" , consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin
-
 	public ResponseEntity<List<Tutorial>> get() {
 		return ResponseEntity.status(HttpStatus.OK).body(tutorialRepo.findAll());
+	}
+
+
+	@PostMapping(value = "/get" , consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin
+	public ResponseEntity<List<Tutorial>> get(@RequestBody Tutorial tutorial) {
+		List<Tutorial> tutorialList = tutorialRepo.findAll();
+		//
+		List<Tutorial> tutorialList1 = tutorialList.stream().
+		filter(tutorial1 -> isaBoolean(tutorial, tutorial1)).
+				collect(Collectors.toList());
+		return ResponseEntity.status(HttpStatus.OK).body(tutorialList);
+	}
+
+
+	private static boolean isaBoolean(Tutorial tutorial, Tutorial tutorial1) {
+		if(!tutorial.getTitle().isEmpty())
+			return tutorial1.getTitle().equals(tutorial.getTitle());
+		return false;
 	}
 
 	@PostMapping("/upload")
